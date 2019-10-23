@@ -1,0 +1,21 @@
+@charset "UTF-8";
+/* CSS Сборс */
+* { margin: 0; padding: 0; }
+
+.header {
+  background-image: url(../images/fon.jpg);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+h1 {
+	font: 16px "Courier New", monospace;
+  color: white;
+}
+
+img {
+  width: 100%;
+  height: auto;
+}

@@ -1,0 +1,18 @@
+{
+  "name": "map",
+  "version": "1.0.0",
+  "description": "Работа с картой",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": "vetta",
+  "license": "ISC",
+  "dependencies": {
+    "leaflet.measurecontrol": "^1.1.0"
+  }
+}

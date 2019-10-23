@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+      <title>Map</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+      <!-- CSS -->
+      <link href="./assets/css/bootstrap.css" rel="stylesheet">
+      <link href="./assets/css/leaflet.measurecontrol.css" rel="stylesheet">
+      <link rel="stylesheet" href="./assets/css/map.css">
+
+      <!-- JavaScript -->
+      <script src="./assets/javascripts/vendor/jquery.js"></script>
+      <script src="./assets/javascripts/vendor/json2.js"></script>
+      <script src="./assets/javascripts/vendor/underscore.js"></script>
+      <script src="./assets/javascripts/vendor/backbone.js"></script>
+      <script src="./assets/javascripts/vendor/backbone.marionette.js"></script>
+      <script src="./assets/javascripts/vendor/bootstrap.js"></script>
+
+      <!-- Dependency to Leaflet -->
+      <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7/leaflet.css" />
+      <script src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js"></script>
+
+      <!-- Dependency to Leaflet Draw -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.3.2/leaflet.draw.css"/>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.3.2/leaflet.draw.js"></script>
+
+      <script src="./assets/javascripts/application.js"></script>
+      <!-- Plugins -->
+      <script src="./assets/javascripts/cursor.js"></script>
+      <script src="./assets/javascripts/leaflet.measurecontrol.js"></script>
+    </head>
+  <body>
+    <div>
+    	<div id="mapid" style="z-index:1;"></div>
+    	<div id="content" class="content"></div>
+    </div>
+
+    <script type="text/template" id="description-template">
+      <%= name %>
+    </script>
+
+    <script type="text/template" id="accordion-group-template">
+      <div class="accordion-heading bg1-color">
+        <a class="link accordion-toggle collapsed" data-toggle="collapse" data-parent="#placeList" href="#place<%= id %>"><%= name %></a>
+      </div>
+
+      <div id="place<%= id %>" class="accordion-body collapse">
+          <div class="accordion-inner bg2-color">
+            <p><%= description %></p>
+          </div>
+      </div>
+    </script>
+
+    <script type="text/javascript">
+      let mymap = L.map('mapid', { measureControl:true }).setView([47.240117, 39.710640], 16);
+
+      // map icon
+      let LeafIcon = L.Icon.extend({
+          options: {
+            iconSize:     [30, 30],
+            iconAnchor:   [8, 25],
+            popupAnchor:  [5, -30]
+          }
+        });
+      let park = new LeafIcon({iconUrl: './assets/images/park.png'}),
+          bed = new LeafIcon({iconUrl: './assets/images/bed.png'}),
+          bus = new LeafIcon({iconUrl: './assets/images/bus.png'}),
+          swimming = new LeafIcon({iconUrl: './assets/images/swimming.png'}),
+          shopping = new LeafIcon({iconUrl: './assets/images/shopping.png'});
+      let marker1 = L.marker([47.239300,39.712650], {icon: bed}).addTo(mymap);
+      let marker2 = L.marker([47.236200, 39.712176], {icon: bus}).addTo(mymap);
+      let marker3 = L.marker([47.238640, 39.713200], {icon: bus}).addTo(mymap);
+      let marker4 = L.marker([47.240273, 39.712769], {icon: shopping}).addTo(mymap);
+      let marker5 = L.marker([47.238728, 39.710800], {icon: swimming}).addTo(mymap);
+      let marker0 = L.marker([47.240117,39.710640], {icon: park}).addTo(mymap);
+
+      marker1.bindPopup("<h5>Общежитие ДГТУ</h5>").openPopup();
+      marker2.bindPopup("<h5>Остановка пл. Гагарина</h5><p>93,23</p>").openPopup();
+      marker3.bindPopup("<h5>Остановка общежитие РИСИ</h5><p>1,5,22,33</p>").openPopup();
+      marker4.bindPopup("<h5>Риф, торговый дом</h5>").openPopup();
+      marker5.bindPopup("<h5>Бассейн ДГТУ</h5>").openPopup();
+      marker0.bindPopup("<h5>Парк ДГТУ</h5><p>Студенческий парк.</p>").openPopup();
+
+      // map
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 18,
+        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
+            '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+            'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        id: 'mapbox.streets'
+      }).addTo(mymap);
+
+      // текущее расположения курсора на карте
+      L.control.mousePosition().addTo(mymap);
+
+      //cписок с объектами
+      let places = [
+        {
+          "id": "marker0",
+          "name": "Парк ДГТУ",
+          "description": "Студенческий парк.",
+          "description": "Студенческий парк."
+        },
+        {
+          "id": "marker1",
+          "name": "Общежитие ДГТУ",
+          "description": ""
+        },
+        {
+          "id": "marker2",
+          "name": "Остановка пл. Гагарина",
+          "description": "93,23"
+        },
+        {
+          "id": "marker3",
+          "name": "Остановка общежитие РИСИ",
+          "description": "1,5,22,33"
+        },
+        {
+          "id": "marker4",
+          "name": "Риф, торговый дом",
+          "description": "",
+        },
+        {
+          "id": "marker5",
+          "name": "Бассейн ДГТУ",
+          "description": "",
+        }
+      ]
+
+      MyApp.addInitializer(function(options){
+        let places = new Places(options.places);
+        let accordionView = new AccordionView({
+          collection: places
+        });
+        MyApp.mainRegion.show(accordionView);
+      });
+      MyApp.start({places: places});
+    </script>
+  </body>
+</html>

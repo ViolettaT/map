@@ -1,0 +1,54 @@
+#mapid {
+  z-index:1;
+  left:0;
+  top:0;
+  height:100%;
+  width:100%;
+  position:absolute;
+}
+
+.content{
+  z-index:2;
+  position:relative;
+  margin-top:3%;
+  left:78%;
+  height:100%;
+  width:20%;
+}
+
+.link {
+ text-decoration: none;
+ color: black;
+}
+.link:hover {
+  text-decoration: none;
+  color: black;
+}
+
+.link:active {
+  text-decoration: none;
+  color: black;
+}
+.link:visited {
+  text-decoration: none;
+  color: black;
+}
+
+.bg1-color{
+  background:#F5F5F5;
+  border-radius: 4px;
+
+}
+
+.bg2-color{
+  background:white;
+}
+
+.leaflet-container .leaflet-control-mouseposition {
+  background-color: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 0 5px #bbb;
+  padding: 0 5px;
+  margin:0;
+  color: #333;
+  font: 11px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+}
