@@ -8,10 +8,6 @@ Places = Backbone.Collection.extend({
   model: Place
 });
 
-DescriptionView = Backbone.Marionette.ItemView.extend({
-  template: "#description-template",
-});
-
 PlaceView = Backbone.Marionette.CompositeView.extend({
   template: "#accordion-group-template",
   className: "accordion-group",
